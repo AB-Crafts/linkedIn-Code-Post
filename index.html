@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="PushToPost - Automatically convert your GitHub activity into polished social media posts. Launch January 1, 2026. Sign up for early access!">
+    <meta name="keywords" content="GitHub, social media automation, developer tools, content creation, AI assistant">
+    <meta name="author" content="PushToPost">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="PushToPost - GitHub to Social AI Assistant">
+    <meta property="og:description"
+        content="Automatically convert your GitHub activity into polished social media posts">
+    <meta property="og:type" content="website">
+
+    <title>PushToPost - Your GitHub-to-Social AI Assistant</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <div class="logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+                <span class="logo-text">PushToPost</span>
+            </div>
+            <div class="nav-links">
+                <a href="#how-it-works" class="nav-link">How It Works</a>
+                <a href="#signup" class="cta-button-small">Get Early Access</a>
+            </div>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                <svg class="theme-icon sun-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2" />
+                    <path
+                        d="M12 1v6m0 6v6m11-11h-6m-6 0H1m17.66-5.66l-4.24 4.24m-4.24 4.24l-4.24 4.24m12.48 0l-4.24-4.24m-4.24-4.24L4.34 4.34"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                <svg class="theme-icon moon-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </button>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-background">
+            <div class="gradient-orb orb-1"></div>
+            <div class="gradient-orb orb-2"></div>
+            <div class="gradient-orb orb-3"></div>
+        </div>
+
+        <div class="container hero-content">
+            <div class="launch-badge">
+                <span class="badge-icon">🚀</span>
+                <span>Launching January 1, 2026</span>
+            </div>
+
+            <h1 class="hero-title">
+                Transform Your <span class="gradient-text">GitHub Activity</span><br>
+                Into Viral Social Posts
+            </h1>
+
+            <p class="hero-subtitle">
+                Your AI-powered marketing assistant that converts commits, releases, and projects
+                into engaging content for Twitter, LinkedIn, and more automatically.
+            </p>
+
+            <div class="hero-cta">
+                <a href="#signup" class="cta-button cta-primary">
+                    <svg class="button-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z"
+                            fill="currentColor" />
+                    </svg>
+                    Sign Up with GitHub
+                </a>
+                <a href="#how-it-works" class="cta-button cta-secondary">
+                    <svg class="button-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
+                        <path d="M10 8l6 4-6 4V8z" fill="currentColor" />
+                    </svg>
+                    Watch Demo
+                </a>
+            </div>
+
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-value">10K+</div>
+                    <div class="stat-label">Developers Waiting</div>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <div class="stat-value">50K+</div>
+                    <div class="stat-label">Posts Generated</div>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <div class="stat-value">5+</div>
+                    <div class="stat-label">Social Platforms</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="scroll-indicator">
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+
+
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">How <span class="gradient-text">PushToPost</span> Works</h2>
+                <p class="section-subtitle">From code to content in three simple steps</p>
+            </div>
+
+            <div class="steps-container">
+                <div class="step-item">
+                    <div class="step-number">01</div>
+                    <div class="step-content">
+                        <div class="step-icon">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                        <h3 class="step-title">Connect Your GitHub</h3>
+                        <p class="step-description">
+                            Sign in securely with GitHub OAuth. Select which repositories you want to share,
+                            and PushToPost sets up webhooks to listen for your activity.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="step-connector"></div>
+
+                <div class="step-item">
+                    <div class="step-number">02</div>
+                    <div class="step-content">
+                        <div class="step-icon">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                        <h3 class="step-title">AI Creates Content</h3>
+                        <p class="step-description">
+                            When you push code, our AI analyzes your commits, release notes, and changes
+                            to generate engaging posts tailored for each social platform.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="step-connector"></div>
+
+                <div class="step-item">
+                    <div class="step-number">03</div>
+                    <div class="step-content">
+                        <div class="step-icon">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                        <h3 class="step-title">Review & Publish</h3>
+                        <p class="step-description">
+                            Customize hashtags, emojis, and messaging in our editor. Then publish instantly
+                            or schedule for optimal engagement times across all your platforms.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="platforms-showcase">
+                <h3 class="platforms-title">Publish to All Your Favorite Platforms</h3>
+                <div class="platforms-grid">
+                    <div class="platform-badge">
+                        <svg class="platform-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"
+                                fill="currentColor" />
+                        </svg>
+                        <span>Twitter/X</span>
+                    </div>
+                    <div class="platform-badge">
+                        <svg class="platform-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+                                fill="currentColor" />
+                        </svg>
+                        <span>LinkedIn</span>
+                    </div>
+                    <div class="platform-badge">
+                        <svg class="platform-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
+                                fill="currentColor" />
+                        </svg>
+                        <span>Facebook</span>
+                    </div>
+                    <div class="platform-badge">
+                        <svg class="platform-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M23.193 7.879c0-.418-.14-.79-.42-1.117-.28-.327-.644-.535-1.092-.623a9.122 9.122 0 00-1.414-.123H3.733c-.47 0-.93.041-1.378.123-.448.088-.812.296-1.092.623-.28.326-.42.699-.42 1.117v8.242c0 .418.14.79.42 1.117.28.327.644.535 1.092.623.448.082.909.123 1.378.123h16.534c.47 0 .93-.041 1.414-.123.448-.088.812-.296 1.092-.623.28-.327.42-.7.42-1.117V7.879zm-3.193 8.242l-8-4.121-8 4.121V7.879l8 4.121 8-4.121v8.242z"
+                                fill="currentColor" />
+                        </svg>
+                        <span>Mastodon</span>
+                    </div>
+                    <div class="platform-badge">
+                        <span class="more-icon">+</span>
+                        <span>More Coming</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Signup Section -->
+    <section class="signup" id="signup">
+        <div class="signup-background">
+            <div class="gradient-orb orb-4"></div>
+            <div class="gradient-orb orb-5"></div>
+        </div>
+
+        <div class="container">
+            <div class="signup-content">
+                <div class="signup-header">
+                    <h2 class="signup-title">Get Early Access</h2>
+                    <p class="signup-subtitle">
+                        Join the waitlist for our January 1, 2026 launch. No credit card needed just sign up
+                        with GitHub and start sharing your code with the world!
+                    </p>
+                </div>
+
+                <div class="signup-form-container glass-effect">
+                    <form class="signup-form" id="signupForm">
+                        <div class="form-group">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" id="email" name="email" class="form-input" placeholder="you@example.com"
+                                required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="github-username" class="form-label">GitHub Username (Optional)</label>
+                            <input type="text" id="github-username" name="github-username" class="form-input"
+                                placeholder="@yourhandle">
+                        </div>
+
+                        <button type="submit" class="cta-button cta-primary form-submit">
+                            <svg class="button-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                            Join the Waitlist
+                        </button>
+
+                        <div class="form-divider">
+                            <span>or</span>
+                        </div>
+
+                        <button type="button" class="github-auth-button" id="githubAuthButton">
+                            <svg class="button-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z"
+                                    fill="currentColor" />
+                            </svg>
+                            Continue with GitHub
+                        </button>
+
+                        <p class="form-note">
+                            By signing up, you agree to our Terms of Service and Privacy Policy.
+                            We'll never share your data without permission.
+                        </p>
+                    </form>
+
+                    <div class="success-message" id="successMessage">
+                        <div class="success-icon">✓</div>
+                        <h3>You're on the list!</h3>
+                        <p>We'll notify you when PushToPost launches on January 1, 2026.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                        <span class="logo-text">PushToPost</span>
+                    </div>
+                    <p class="footer-tagline">Transform GitHub activity into viral social posts</p>
+                </div>
+
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4 class="footer-heading">Product</h4>
+                        <ul class="footer-list">
+
+                            <li><a href="#how-it-works">How It Works</a></li>
+                            <li><a href="#signup">Pricing</a></li>
+                            <li><a href="#signup">Roadmap</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-column">
+                        <h4 class="footer-heading">Resources</h4>
+                        <ul class="footer-list">
+                            <li><a href="#signup">Documentation</a></li>
+                            <li><a href="#signup">API Reference</a></li>
+                            <li><a href="#signup">Blog</a></li>
+                            <li><a href="#signup">Support</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-column">
+                        <h4 class="footer-heading">Company</h4>
+                        <ul class="footer-list">
+                            <li><a href="#signup">About</a></li>
+                            <li><a href="#signup">Privacy</a></li>
+                            <li><a href="#signup">Terms</a></li>
+                            <li><a href="#signup">Contact</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p class="footer-copyright">© 2026 PushToPost. All rights reserved.</p>
+                <div class="footer-socials">
+                    <a href="#" class="social-link" aria-label="Twitter">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"
+                                fill="currentColor" />
+                        </svg>
+                    </a>
+                    <a href="#" class="social-link" aria-label="GitHub">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z"
+                                fill="currentColor" />
+                        </svg>
+                    </a>
+                    <a href="#" class="social-link" aria-label="LinkedIn">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+                                fill="currentColor" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
