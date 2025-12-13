@@ -67,31 +67,133 @@ if (mobileMenuToggle) {
     });
 }
 
-// Form submission handling
+// =========================================
+// Supabase Configuration
+// =========================================
+// IMPORTANT: Replace these with your actual Supabase credentials
+// You can find these in your Supabase project settings under API
+const SUPABASE_URL = 'https://tmvwqggielmjjiqdlskb.supabase.co'; // Example: https://xxxxx.supabase.co
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRtdndxZ2dpZWxtamppcWRsc2tiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU1MzE1MTEsImV4cCI6MjA4MTEwNzUxMX0.i61GxVwChMI1kG-gft-oSU515DjXvo_pQhNEpmlpurY'; // Your public anon key
+
+// Initialize Supabase client
+let supabase = null;
+
+// Check if Supabase credentials are configured
+if (SUPABASE_URL && SUPABASE_ANON_KEY && SUPABASE_URL.includes('supabase.co')) {
+    try {
+        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        console.log('✅ Supabase initialized successfully');
+    } catch (error) {
+        console.error('❌ Supabase initialization error:', error);
+    }
+} else {
+    console.warn('⚠️ Supabase credentials not configured. Please update SUPABASE_URL and SUPABASE_ANON_KEY in script.js');
+}
+
+// =========================================
+// Form submission handling with Supabase + Web3Forms
+// =========================================
 const signupForm = document.getElementById('signupForm');
 const successMessage = document.getElementById('successMessage');
 
 if (signupForm) {
-    signupForm.addEventListener('submit', (e) => {
+    signupForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        // Get form data
-        const email = document.getElementById('email').value;
-        const githubUsername = document.getElementById('github-username').value;
+        const formData = new FormData(signupForm);
+        const email = formData.get('email');
+        const submitButton = signupForm.querySelector('button[type="submit"]');
+        const buttonText = submitButton.innerHTML;
 
-        // Here you would normally send this data to your backend
-        console.log('Form submitted:', { email, githubUsername });
+        // Show loading state
+        submitButton.innerHTML = `
+            <svg class="button-icon animate-spin" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" opacity="0.25"/>
+                <path d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" fill="currentColor"/>
+            </svg>
+            Submitting...
+        `;
+        submitButton.disabled = true;
 
-        // Show success message
-        signupForm.style.display = 'none';
-        successMessage.classList.add('active');
+        let supabaseSuccess = false;
+        let web3formsSuccess = false;
 
-        // Optional: Reset form after delay
-        setTimeout(() => {
-            signupForm.style.display = 'flex';
-            successMessage.classList.remove('active');
-            signupForm.reset();
-        }, 5000);
+        try {
+            // 1. Store in Supabase first
+            if (supabase) {
+                try {
+                    const { data, error } = await supabase
+                        .from('waitlist')
+                        .insert([
+                            {
+                                email: email,
+                                created_at: new Date().toISOString(),
+                                source: 'landing_page'
+                            }
+                        ])
+                        .select();
+
+                    if (error) {
+                        // Check if it's a duplicate email error (409 Conflict or PostgreSQL 23505)
+                        if (error.code === '23505' || error.status === 409 || error.message?.includes('duplicate') || error.message?.includes('already exists')) {
+                            console.log('✅ Email already exists in waitlist - skipping duplicate');
+                            supabaseSuccess = true; // Still consider it a success
+                        } else {
+                            throw error;
+                        }
+                    } else {
+                        console.log('✅ Email stored in Supabase:', data);
+                        supabaseSuccess = true;
+                    }
+                } catch (supabaseError) {
+                    console.error('❌ Supabase error:', supabaseError);
+                    // Continue with Web3Forms even if Supabase fails
+                }
+            }
+
+            // 2. Send via Web3Forms (for email notification)
+            try {
+                const response = await fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    console.log('✅ Email sent via Web3Forms');
+                    web3formsSuccess = true;
+                } else {
+                    console.error('❌ Web3Forms error:', data);
+                }
+            } catch (web3Error) {
+                console.error('❌ Web3Forms fetch error:', web3Error);
+            }
+
+            // Show success if at least one method worked
+            if (supabaseSuccess || web3formsSuccess) {
+                // Show success message
+                signupForm.style.display = 'none';
+                successMessage.classList.add('active');
+
+                // Reset form after delay
+                setTimeout(() => {
+                    signupForm.style.display = 'flex';
+                    successMessage.classList.remove('active');
+                    signupForm.reset();
+                    submitButton.innerHTML = buttonText;
+                    submitButton.disabled = false;
+                }, 5000);
+            } else {
+                throw new Error('Both submission methods failed');
+            }
+
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Something went wrong. Please try again.');
+            submitButton.innerHTML = buttonText;
+            submitButton.disabled = false;
+        }
     });
 }
 

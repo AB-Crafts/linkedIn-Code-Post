@@ -1,0 +1,22 @@
+{
+  "name": "pushtopost-email-sender",
+  "version": "1.0.0",
+  "description": "Send thank you emails to PushToPost waitlist subscribers",
+  "main": "send-emails.js",
+  "scripts": {
+    "send-emails": "node send-emails.js",
+    "test-email": "node send-emails.js --test"
+  },
+  "keywords": [
+    "email",
+    "resend",
+    "waitlist"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0",
+    "dotenv": "^16.3.1",
+    "resend": "^3.0.0"
+  }
+}

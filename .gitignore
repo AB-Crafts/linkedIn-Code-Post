@@ -1,0 +1,4 @@
+# Environment Variables - DO NOT COMMIT THIS FILE!
+.env
+
+# Add this to your .gitignore

@@ -100,29 +100,18 @@
                     Sign Up with GitHub
                 </a>
                 <a href="#how-it-works" class="cta-button cta-secondary">
-                    <svg class="button-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
-                        <path d="M10 8l6 4-6 4V8z" fill="currentColor" />
-                    </svg>
-                    Watch Demo
+
+                    How It Works
                 </a>
             </div>
 
             <div class="hero-stats">
                 <div class="stat-item">
-                    <div class="stat-value">10K+</div>
+                    <div class="stat-value">20K+</div>
                     <div class="stat-label">Developers Waiting</div>
                 </div>
-                <div class="stat-divider"></div>
-                <div class="stat-item">
-                    <div class="stat-value">50K+</div>
-                    <div class="stat-label">Posts Generated</div>
-                </div>
-                <div class="stat-divider"></div>
-                <div class="stat-item">
-                    <div class="stat-value">5+</div>
-                    <div class="stat-label">Social Platforms</div>
-                </div>
+
+
             </div>
         </div>
 
@@ -149,7 +138,7 @@
                             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
-                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke="currentColor" stroke-width="" stroke-linecap="round"
                                     stroke-linejoin="round" />
                             </svg>
                         </div>
@@ -268,17 +257,19 @@
                 </div>
 
                 <div class="signup-form-container glass-effect">
-                    <form class="signup-form" id="signupForm">
+                    <form class="signup-form" id="signupForm" action="https://api.web3forms.com/submit" method="POST">
+                        <!-- Web3Forms Access Key - This sends emails to syedabdullah9032@gmail.com -->
+                        <input type="hidden" name="access_key" value="f3c76718-4e27-4eec-b4fe-d982aede695c">
+
+                        <!-- Email configuration -->
+                        <input type="hidden" name="subject" value="New PushToPost Waitlist Signup!">
+                        <input type="hidden" name="from_name" value="PushToPost Waitlist">
+                        <input type="hidden" name="redirect" value="false">
+
                         <div class="form-group">
                             <label for="email" class="form-label">Email Address</label>
                             <input type="email" id="email" name="email" class="form-input" placeholder="you@example.com"
                                 required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="github-username" class="form-label">GitHub Username (Optional)</label>
-                            <input type="text" id="github-username" name="github-username" class="form-input"
-                                placeholder="@yourhandle">
                         </div>
 
                         <button type="submit" class="cta-button cta-primary form-submit">
@@ -287,19 +278,6 @@
                                     stroke-linejoin="round" />
                             </svg>
                             Join the Waitlist
-                        </button>
-
-                        <div class="form-divider">
-                            <span>or</span>
-                        </div>
-
-                        <button type="button" class="github-auth-button" id="githubAuthButton">
-                            <svg class="button-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z"
-                                    fill="currentColor" />
-                            </svg>
-                            Continue with GitHub
                         </button>
 
                         <p class="form-note">
@@ -336,38 +314,6 @@
                     </div>
                     <p class="footer-tagline">Transform GitHub activity into viral social posts</p>
                 </div>
-
-                <div class="footer-links">
-                    <div class="footer-column">
-                        <h4 class="footer-heading">Product</h4>
-                        <ul class="footer-list">
-
-                            <li><a href="#how-it-works">How It Works</a></li>
-                            <li><a href="#signup">Pricing</a></li>
-                            <li><a href="#signup">Roadmap</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="footer-column">
-                        <h4 class="footer-heading">Resources</h4>
-                        <ul class="footer-list">
-                            <li><a href="#signup">Documentation</a></li>
-                            <li><a href="#signup">API Reference</a></li>
-                            <li><a href="#signup">Blog</a></li>
-                            <li><a href="#signup">Support</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="footer-column">
-                        <h4 class="footer-heading">Company</h4>
-                        <ul class="footer-list">
-                            <li><a href="#signup">About</a></li>
-                            <li><a href="#signup">Privacy</a></li>
-                            <li><a href="#signup">Terms</a></li>
-                            <li><a href="#signup">Contact</a></li>
-                        </ul>
-                    </div>
-                </div>
             </div>
 
             <div class="footer-bottom">
@@ -398,6 +344,9 @@
             </div>
         </div>
     </footer>
+
+    <!-- Supabase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script src="script.js"></script>
 </body>
