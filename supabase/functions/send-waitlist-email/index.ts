@@ -1,6 +1,7 @@
 // Setup type definitions for built-in Supabase Runtime APIs
-import "jsr:@supabase/functions-js/edge-runtime.d.ts";
-import { Resend } from "npm:resend@2.0.0";
+// deno-lint-ignore-file no-explicit-any
+import "@supabase/functions-js/edge-runtime.d.ts";
+import { Resend } from "resend";
 
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 const FROM_EMAIL = Deno.env.get("FROM_EMAIL") || "noreply@pushtopost.dev";
@@ -115,7 +116,10 @@ Deno.serve(async (req: Request) => {
     if (!email) {
       return new Response(
         JSON.stringify({ error: "Email is required" }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+        {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
       );
     }
 
@@ -132,7 +136,10 @@ Deno.serve(async (req: Request) => {
       console.error("Resend error:", error);
       return new Response(
         JSON.stringify({ error: error.message }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+        {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
       );
     }
 
@@ -146,7 +153,10 @@ Deno.serve(async (req: Request) => {
     console.error("Error sending email:", error);
     return new Response(
       JSON.stringify({ error: error.message || "Unknown error" }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      },
     );
   }
 });
