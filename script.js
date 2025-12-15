@@ -134,12 +134,12 @@ async function updateWaitlistCount() {
 }
 
 // Update count on load
-// Update count on load - moved to window load event
-// if (document.readyState === 'loading') {
-//     document.addEventListener('DOMContentLoaded', updateWaitlistCount);
-// } else {
-//     updateWaitlistCount();
-// }
+// Update count on load
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', updateWaitlistCount);
+} else {
+    updateWaitlistCount();
+}
 
 // =========================================
 // Form submission handling with Supabase + Web3Forms
