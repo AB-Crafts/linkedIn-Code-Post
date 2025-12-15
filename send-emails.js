@@ -39,6 +39,23 @@ function validateConfig() {
     }
 }
 
+// Check if email_sent column exists
+async function checkSchema() {
+    const { error } = await supabase
+        .from('waitlist')
+        .select('email_sent')
+        .limit(1);
+
+    if (error && error.message.includes('product_not_found') === false) { // Generic error check, but specific message usually contains 'column...does not exist'
+         if (error.message.includes('does not exist')) {
+            console.error('\n❌ Missing "email_sent" column in "waitlist" table.');
+            console.error('Please run this SQL in your Supabase SQL Editor to enable tracking:');
+            console.error('\n   ALTER TABLE waitlist ADD COLUMN email_sent boolean DEFAULT false;\n');
+            process.exit(1);
+         }
+    }
+}
+
 // Initialize clients
 const resend = new Resend(RESEND_API_KEY);
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
@@ -53,13 +70,14 @@ function loadEmailTemplate() {
     return fs.readFileSync(templatePath, 'utf-8');
 }
 
-// Fetch all emails from Supabase
+// Fetch unsent emails from Supabase
 async function fetchWaitlistEmails() {
-    console.log('📥 Fetching emails from Supabase...');
+    console.log('📥 Fetching unsent emails from Supabase...');
 
     const { data, error } = await supabase
         .from('waitlist')
-        .select('email, created_at')
+        .select('email, created_at, email_sent')
+        .is('email_sent', false) // Only fetch if email_sent is false or null
         .order('created_at', { ascending: true });
 
     if (error) {
@@ -67,7 +85,7 @@ async function fetchWaitlistEmails() {
         throw error;
     }
 
-    console.log(`✅ Found ${data.length} subscribers in waitlist`);
+    console.log(`✅ Found ${data.length} subscribers who haven't received an email yet`);
     return data;
 }
 
@@ -86,7 +104,18 @@ async function sendEmail(email, htmlTemplate) {
             return { success: false, email, error: error.message };
         }
 
-        console.log(`   ✅ Sent to ${email}`);
+        // Mark as sent in Supabase
+        const { error: updateError } = await supabase
+            .from('waitlist')
+            .update({ email_sent: true })
+            .eq('email', email);
+
+        if (updateError) {
+             console.error(`   ⚠️ Sent to ${email} but failed to update DB: ${updateError.message}`);
+        } else {
+             console.log(`   ✅ Sent to ${email} (and marked as sent)`);
+        }
+
         return { success: true, email, messageId: data.id };
     } catch (error) {
         console.error(`   ❌ Exception sending to ${email}:`, error.message);
@@ -188,6 +217,9 @@ async function main() {
 
     // Validate configuration
     validateConfig();
+
+    // Check schema
+    await checkSchema();
 
     // Load email template
     const htmlTemplate = loadEmailTemplate();

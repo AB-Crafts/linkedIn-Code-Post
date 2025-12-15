@@ -1,6 +1,7 @@
 # Resend Email Setup Guide
 
-Complete guide for setting up and using the Resend email system to send thank you emails to your PushToPost waitlist subscribers.
+Complete guide for setting up and using the Resend email system to send thank
+you emails to your PushToPost waitlist subscribers.
 
 ## Prerequisites
 
@@ -18,7 +19,9 @@ Complete guide for setting up and using the Resend email system to send thank yo
 
 ## Step 2: Add and Verify Your Domain
 
-For production email sending, you need to verify your domain:
+For production email sending, you need to verify your domain: (Note: You
+**cannot** verify free subdomains like `pushtopost.netlify.app` or `verce.app`.
+You must own a custom domain like `pushtopost.com`).
 
 1. In Resend dashboard, go to **Domains**
 2. Click **Add Domain**
@@ -31,6 +34,7 @@ For production email sending, you need to verify your domain:
 ### For Testing Without a Domain
 
 If you don't have a domain yet, you can use Resend's test domain:
+
 - Use `onboarding@resend.dev` as your FROM_EMAIL
 - Test emails will be sent but may have limitations
 
@@ -51,7 +55,8 @@ If you don't have a domain yet, you can use Resend's test domain:
 4. Copy this key
 
 > [!CAUTION]
-> The service_role key has full database access. Never expose it in client-side code or public repositories!
+> The service_role key has full database access. Never expose it in client-side
+> code or public repositories!
 
 ## Step 5: Configure Environment Variables
 
@@ -79,7 +84,8 @@ WEB3FORMS_ACCESS_KEY=f3c76718-4e27-4eec-b4fe-d982aede695c
 ```
 
 > [!IMPORTANT]
-> **Security**: Never commit your `.env` file to Git! Make sure `.env` is in your `.gitignore` file.
+> **Security**: Never commit your `.env` file to Git! Make sure `.env` is in
+> your `.gitignore` file.
 
 ## Step 6: Install Dependencies
 
@@ -90,6 +96,7 @@ npm install
 ```
 
 This will install:
+
 - `resend` - Official Resend SDK
 - `@supabase/supabase-js` - Supabase client
 - `dotenv` - Environment variable loader
@@ -107,11 +114,13 @@ node send-emails.js --test your.email@example.com
 ```
 
 This will:
+
 - Send the email only to your test address
 - Let you verify the email looks correct
 - Check that all integrations work
 
 **What to check in the test email:**
+
 - ✅ Email formatting and styling
 - ✅ All links work correctly
 - ✅ Images load properly
@@ -127,12 +136,14 @@ node send-emails.js
 ```
 
 This will:
+
 - Fetch all emails from your Supabase waitlist
 - Send emails in batches of 10 with rate limiting
 - Display progress in real-time
 - Show a final summary of sent/failed emails
 
 **Expected output:**
+
 ```
 🚀 PushToPost Email Sender
 ══════════════════════════════════════════════════
@@ -197,6 +208,7 @@ After making changes, test again before sending to all subscribers.
 ### Email Analytics
 
 Track:
+
 - Delivery rate
 - Bounce rate
 - Open rate (if tracking is enabled)
@@ -207,46 +219,52 @@ Track:
 ## Troubleshooting
 
 ### Error: "RESEND_API_KEY is missing"
-→ Make sure you've created a `.env` file (not just `.env.example`)
-→ Check that the API key is correctly set in `.env`
+
+→ Make sure you've created a `.env` file (not just `.env.example`) → Check that
+the API key is correctly set in `.env`
 
 ### Error: "Email template not found"
+
 → Ensure `email-template.html` exists in the same directory as `send-emails.js`
 
 ### Error: "Error fetching emails from Supabase"
-→ Check that your `SUPABASE_SERVICE_KEY` is correct (not the anon key)
-→ Verify your Supabase project is accessible
+
+→ Check that your `SUPABASE_SERVICE_KEY` is correct (not the anon key) → Verify
+your Supabase project is accessible
 
 ### Emails are going to spam
-→ Make sure your domain is verified in Resend
-→ Add proper SPF, DKIM, and DMARC DNS records
-→ Avoid spam trigger words in your email content
-→ Warm up your domain by sending small batches first
+
+→ Make sure your domain is verified in Resend → Add proper SPF, DKIM, and DMARC
+DNS records → Avoid spam trigger words in your email content → Warm up your
+domain by sending small batches first
 
 ### Rate limit errors
-→ Resend free tier allows 100 emails/day
-→ Paid plans have higher limits
-→ Adjust `EMAILS_PER_BATCH` and `DELAY_BETWEEN_BATCHES` in the script
+
+→ Resend free tier allows 100 emails/day → Paid plans have higher limits →
+Adjust `EMAILS_PER_BATCH` and `DELAY_BETWEEN_BATCHES` in the script
 
 ### Bounced emails
-→ Invalid or non-existent email addresses
-→ Check your Supabase data for typos
-→ Some email providers block bulk senders
+
+→ Invalid or non-existent email addresses → Check your Supabase data for typos →
+Some email providers block bulk senders
 
 ---
 
 ## Rate Limits
 
 ### Resend Free Tier
+
 - 100 emails per day
 - 3,000 emails per month
 
 ### Resend Pro Plan
+
 - Unlimited emails
 - Better deliverability
 - Priority support
 
 If you have more than 100 subscribers, consider:
+
 1. Running the script over multiple days
 2. Upgrading to Resend Pro
 3. Adjusting the batch size to fit within limits
@@ -268,14 +286,17 @@ If you have more than 100 subscribers, consider:
 ## Security Notes
 
 ✅ **Safe to expose (client-side)**:
+
 - `SUPABASE_URL`
 - `SUPABASE_ANON_KEY`
 
 🔒 **Never expose (server-side only)**:
+
 - `RESEND_API_KEY`
 - `SUPABASE_SERVICE_KEY`
 
 ⚠️ **Important**:
+
 - Add `.env` to `.gitignore`
 - Never commit API keys to version control
 - Rotate keys if accidentally exposed
@@ -302,4 +323,5 @@ After sending your thank you emails:
 
 ---
 
-**Ready to send?** Run `node send-emails.js --test your@email.com` to get started! 🚀
+**Ready to send?** Run `node send-emails.js --test your@email.com` to get
+started! 🚀

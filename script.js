@@ -90,6 +90,57 @@ if (SUPABASE_URL && SUPABASE_ANON_KEY && SUPABASE_URL.includes('supabase.co')) {
     console.warn('⚠️ Supabase credentials not configured. Please update SUPABASE_URL and SUPABASE_ANON_KEY in script.js');
 }
 
+// Function to update waitlist count
+async function updateWaitlistCount() {
+    console.log('🔄 Attempting to update waitlist count...');
+    if (!supabase) {
+        console.error('❌ Supabase client not initialized within updateWaitlistCount');
+        return;
+    }
+    
+    try {
+        const { count, error } = await supabase
+            .from('waitlist')
+            .select('*', { count: 'exact', head: true });
+            
+        if (error) {
+            console.error('❌ Supabase error fetching count:', error);
+            return;
+        }
+
+        console.log('✅ Fetched count:', count);
+
+        if (count !== null) {
+            const element = document.getElementById('waitlist-count');
+            if (element) {
+                console.log('✅ Found element, updating text from', element.textContent, 'to', count.toLocaleString() + '+');
+                
+                // If count is less than 100, we might want to show a higher "marketing" number
+                // But per user request, we are showing dynamic count. 
+                // Let's format it.
+                element.textContent = count.toLocaleString() + '+';
+                
+                // Update data attribute for animation if it hasn't run yet
+                if (!element.dataset.animated) {
+                    element.textContent = count.toLocaleString() + '+';
+                }
+            } else {
+                console.error('❌ Element "waitlist-count" not found in DOM');
+            }
+        }
+    } catch (err) {
+        console.error('Error fetching waitlist count:', err);
+    }
+}
+
+// Update count on load
+// Update count on load - moved to window load event
+// if (document.readyState === 'loading') {
+//     document.addEventListener('DOMContentLoaded', updateWaitlistCount);
+// } else {
+//     updateWaitlistCount();
+// }
+
 // =========================================
 // Form submission handling with Supabase + Web3Forms
 // =========================================
@@ -144,6 +195,21 @@ if (signupForm) {
                     } else {
                         console.log('✅ Email stored in Supabase:', data);
                         supabaseSuccess = true;
+
+                        // 1.1 Trigger welcome email via Edge Function
+                        console.log('📨 Triggering welcome email...');
+                        const { data: funcData, error: funcError } = await supabase.functions.invoke('send-waitlist-email', {
+                            body: { email: email }
+                        });
+
+                        if (funcError) {
+                            console.error('⚠️ Failed to send welcome email:', funcError);
+                        } else {
+                            console.log('✅ Welcome email sent:', funcData);
+                        }
+
+                        // Update the count dynamically
+                        updateWaitlistCount();
                     }
                 } catch (supabaseError) {
                     console.error('❌ Supabase error:', supabaseError);
@@ -336,6 +402,13 @@ window.addEventListener('load', () => {
     // Log to console for debugging
     console.log('%c🚀 PushToPost Landing Page Loaded!', 'color: #3b82f6; font-size: 20px; font-weight: bold;');
     console.log('%cLaunching January 1, 2026', 'color: #8b5cf6; font-size: 14px;');
+
+    // Update waitlist count (Global function)
+    if (typeof updateWaitlistCount === 'function') {
+        updateWaitlistCount();
+    } else {
+        console.error('❌ updateWaitlistCount function not found');
+    }
 });
 
 // Form validation
