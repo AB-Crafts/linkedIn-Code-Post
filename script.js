@@ -204,6 +204,12 @@ if (signupForm) {
 
                         if (funcError) {
                             console.error('⚠️ Failed to send welcome email:', funcError);
+                            // Try to log the breakdown of the error
+                            if (funcError && typeof funcError === 'object' && 'context' in funcError) {
+                                funcError.context.text().then(text => {
+                                    console.error('❌ Edge Function Error Body:', text);
+                                }).catch(e => console.error('Could not read error body', e));
+                            }
                         } else {
                             console.log('✅ Welcome email sent:', funcData);
                         }
