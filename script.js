@@ -115,15 +115,12 @@ async function updateWaitlistCount() {
             if (element) {
                 console.log('✅ Found element, updating text from', element.textContent, 'to', count.toLocaleString() + '+');
                 
-                // If count is less than 100, we might want to show a higher "marketing" number
-                // But per user request, we are showing dynamic count. 
-                // Let's format it.
-                element.textContent = count.toLocaleString() + '+';
+                // Animate from 0 to the actual count
+                // animateCounter is defined later in the file, but function declarations are hoisted
+                animateCounter(element, count, 2000);
                 
-                // Update data attribute for animation if it hasn't run yet
-                if (!element.dataset.animated) {
-                    element.textContent = count.toLocaleString() + '+';
-                }
+                // Mark as animated so intersection observer doesn't re-trigger it
+                element.dataset.animated = 'true';
             } else {
                 console.error('❌ Element "waitlist-count" not found in DOM');
             }
