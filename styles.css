@@ -159,7 +159,7 @@ body.light-theme .nav-link {
 }
 
 body.light-theme .nav-link:hover {
-    color: var(--color-accent-primary);
+    color: var(--color-bg-secondary);
 }
 
 body.light-theme .nav-link::after {
