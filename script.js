@@ -68,49 +68,35 @@ if (mobileMenuToggle) {
 }
 
 // =========================================
-// Supabase Configuration
+// Supabase Edge Function Configuration
 // =========================================
-// IMPORTANT: Replace these with your actual Supabase credentials
-// You can find these in your Supabase project settings under API
-const SUPABASE_URL = 'https://tmvwqggielmjjiqdlskb.supabase.co'; // Example: https://xxxxx.supabase.co
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRtdndxZ2dpZWxtamppcWRsc2tiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU1MzE1MTEsImV4cCI6MjA4MTEwNzUxMX0.i61GxVwChMI1kG-gft-oSU515DjXvo_pQhNEpmlpurY'; // Your public anon key
+// Database operations are now handled securely via edge functions
+// No database credentials are exposed on the client side
+const SUPABASE_FUNCTION_URL = 'https://tmvwqggielmjjiqdlskb.supabase.co/functions/v1';
 
-// Initialize Supabase client
-let supabase = null;
-
-// Check if Supabase credentials are configured
-if (SUPABASE_URL && SUPABASE_ANON_KEY && SUPABASE_URL.includes('supabase.co')) {
-    try {
-        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        console.log('✅ Supabase initialized successfully');
-    } catch (error) {
-        console.error('❌ Supabase initialization error:', error);
-    }
-} else {
-    console.warn('⚠️ Supabase credentials not configured. Please update SUPABASE_URL and SUPABASE_ANON_KEY in script.js');
-}
 
 // Function to update waitlist count
 async function updateWaitlistCount() {
-    console.log('🔄 Attempting to update waitlist count...');
-    if (!supabase) {
-        console.error('❌ Supabase client not initialized within updateWaitlistCount');
-        return;
-    }
+    console.log('🔄 Fetching waitlist count from edge function...');
     
     try {
-        const { count, error } = await supabase
-            .from('waitlist')
-            .select('*', { count: 'exact', head: true });
+        const response = await fetch(`${SUPABASE_FUNCTION_URL}/get-waitlist-count`);
+        
+        if (!response.ok) {
+            console.error('❌ Edge function error:', response.statusText);
+            return;
+        }
+        
+        const { count, error } = await response.json();
             
         if (error) {
-            console.error('❌ Supabase error fetching count:', error);
+            console.error('❌ Error fetching count:', error);
             return;
         }
 
         console.log('✅ Fetched count:', count);
 
-        if (count !== null) {
+        if (count !== null && count !== undefined) {
             const element = document.getElementById('waitlist-count');
             if (element) {
                 console.log('✅ Found element, updating text from', element.textContent, 'to', count.toLocaleString() + '+');
@@ -139,38 +125,9 @@ if (document.readyState === 'loading') {
 }
 
 // =========================================
-// Form submission handling with Supabase + Web3Forms
+// Form submission handling with Edge Functions + Web3Forms
 // =========================================
 
-// Function to check if email already exists in waitlist
-async function checkEmailExists(email) {
-    if (!supabase) {
-        return false; // If Supabase is not initialized, skip check
-    }
-    
-    try {
-        const { data, error } = await supabase
-            .from('waitlist')
-            .select('email')
-            .eq('email', email)
-            .single();
-        
-        if (error) {
-            // If error is "PGRST116" it means no rows found (email doesn't exist)
-            if (error.code === 'PGRST116') {
-                return false;
-            }
-            console.error('Error checking email:', error);
-            return false;
-        }
-        
-        // If we got data, email exists
-        return data !== null;
-    } catch (err) {
-        console.error('Error in checkEmailExists:', err);
-        return false;
-    }
-}
 
 // Function to show error message
 function showErrorMessage(message) {
@@ -198,13 +155,6 @@ if (signupForm) {
         const submitButton = signupForm.querySelector('button[type="submit"]');
         const buttonText = submitButton.innerHTML;
 
-        // Check if email already exists
-        const emailExists = await checkEmailExists(email);
-        if (emailExists) {
-            showErrorMessage('This email is already on the waitlist! Check your inbox for our welcome email.');
-            return; // Stop form submission
-        }
-
         // Show loading state
         submitButton.innerHTML = `
             <svg class="button-icon animate-spin" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -215,67 +165,44 @@ if (signupForm) {
         `;
         submitButton.disabled = true;
 
-        let supabaseSuccess = false;
+        let edgeFunctionSuccess = false;
         let web3formsSuccess = false;
 
         try {
-            // 1. Store in Supabase first
-            if (supabase) {
-                try {
-                    const { data, error } = await supabase
-                        .from('waitlist')
-                        .insert([
-                            {
-                                email: email,
-                                created_at: new Date().toISOString(),
-                                source: 'landing_page'
-                            }
-                        ])
-                        .select();
+            // 1. Add to waitlist via edge function (includes duplicate check and email sending)
+            try {
+                const response = await fetch(`${SUPABASE_FUNCTION_URL}/add-to-waitlist`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email: email })
+                });
 
-                    if (error) {
-                        // Check if it's a duplicate email error (409 Conflict or PostgreSQL 23505)
-                        if (error.code === '23505' || error.status === 409 || error.message?.includes('duplicate') || error.message?.includes('already exists')) {
-                            console.log('⚠️ Email already exists in waitlist');
-                            showErrorMessage('This email is already on the waitlist! Check your inbox for our welcome email.');
-                            submitButton.innerHTML = buttonText;
-                            submitButton.disabled = false;
-                            return; // Stop execution
-                        } else {
-                            throw error;
-                        }
-                    } else {
-                        console.log('✅ Email stored in Supabase:', data);
-                        supabaseSuccess = true;
+                const data = await response.json();
 
-                        // 1.1 Trigger welcome email via Edge Function
-                        console.log('📨 Triggering welcome email...');
-                        const { data: funcData, error: funcError } = await supabase.functions.invoke('send-waitlist-email', {
-                            body: { email: email }
-                        });
+                if (response.status === 409) {
+                    // Duplicate email detected
+                    console.log('⚠️ Email already exists in waitlist');
+                    showErrorMessage(data.error || 'This email is already on the waitlist! Check your inbox for our welcome email.');
+                    submitButton.innerHTML = buttonText;
+                    submitButton.disabled = false;
+                    return; // Stop execution
+                } else if (!response.ok) {
+                    throw new Error(data.error || 'Failed to add to waitlist');
+                } else {
+                    console.log('✅ Email added to waitlist:', data);
+                    edgeFunctionSuccess = true;
 
-                        if (funcError) {
-                            console.error('⚠️ Failed to send welcome email:', funcError);
-                            // Try to log the breakdown of the error
-                            if (funcError && typeof funcError === 'object' && 'context' in funcError) {
-                                funcError.context.text().then(text => {
-                                    console.error('❌ Edge Function Error Body:', text);
-                                }).catch(e => console.error('Could not read error body', e));
-                            }
-                        } else {
-                            console.log('✅ Welcome email sent:', funcData);
-                        }
-
-                        // Update the count dynamically
-                        updateWaitlistCount();
-                    }
-                } catch (supabaseError) {
-                    console.error('❌ Supabase error:', supabaseError);
-                    // Continue with Web3Forms even if Supabase fails
+                    // Update the count dynamically
+                    updateWaitlistCount();
                 }
+            } catch (edgeFunctionError) {
+                console.error('❌ Edge function error:', edgeFunctionError);
+                // Continue with Web3Forms even if edge function fails
             }
 
-            // 2. Send via Web3Forms (for email notification)
+            // 2. Send via Web3Forms (for backup email notification)
             try {
                 const response = await fetch('https://api.web3forms.com/submit', {
                     method: 'POST',
@@ -295,7 +222,7 @@ if (signupForm) {
             }
 
             // Show success if at least one method worked
-            if (supabaseSuccess || web3formsSuccess) {
+            if (edgeFunctionSuccess || web3formsSuccess) {
                 // Show success message
                 signupForm.style.display = 'none';
                 successMessage.classList.add('active');
