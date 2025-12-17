@@ -1,6 +1,5 @@
-// Setup type definitions for built-in Supabase Runtime APIs
+// Edge function to add email to waitlist with duplicate checking and email sending
 // deno-lint-ignore-file no-explicit-any
-import "@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
 import { Resend } from "npm:resend@4.0.0";
 

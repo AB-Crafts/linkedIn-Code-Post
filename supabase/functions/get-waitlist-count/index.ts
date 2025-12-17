@@ -1,5 +1,4 @@
-// Setup type definitions for built-in Supabase Runtime APIs
-import "@supabase/functions-js/edge-runtime.d.ts";
+// Edge function to get waitlist count
 import { createClient } from "jsr:@supabase/supabase-js@2";
 
 const corsHeaders = {

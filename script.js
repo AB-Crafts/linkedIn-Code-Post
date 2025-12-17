@@ -71,8 +71,9 @@ if (mobileMenuToggle) {
 // Supabase Edge Function Configuration
 // =========================================
 // Database operations are now handled securely via edge functions
-// No database credentials are exposed on the client side
+// The anon key is only used for edge function authentication, not direct database access
 const SUPABASE_FUNCTION_URL = 'https://tmvwqggielmjjiqdlskb.supabase.co/functions/v1';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRtdndxZ2dpZWxtamppcWRsc2tiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU1MzE1MTEsImV4cCI6MjA4MTEwNzUxMX0.i61GxVwChMI1kG-gft-oSU515DjXvo_pQhNEpmlpurY';
 
 
 // Function to update waitlist count
@@ -80,7 +81,12 @@ async function updateWaitlistCount() {
     console.log('🔄 Fetching waitlist count from edge function...');
     
     try {
-        const response = await fetch(`${SUPABASE_FUNCTION_URL}/get-waitlist-count`);
+        const response = await fetch(`${SUPABASE_FUNCTION_URL}/get-waitlist-count`, {
+            headers: {
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                'apikey': SUPABASE_ANON_KEY
+            }
+        });
         
         if (!response.ok) {
             console.error('❌ Edge function error:', response.statusText);
@@ -175,6 +181,8 @@ if (signupForm) {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                        'apikey': SUPABASE_ANON_KEY
                     },
                     body: JSON.stringify({ email: email })
                 });
