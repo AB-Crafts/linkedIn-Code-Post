@@ -192,8 +192,12 @@ if (signupForm) {
                     } else {
                         console.log('✅ Email stored in Supabase:', data);
                         supabaseSuccess = true;
+                        // Update the count dynamically
+                        updateWaitlistCount();
+                    }
 
-                        // 1.1 Trigger welcome email via Edge Function
+                    // Send welcome email for both new and existing signups
+                    if (supabaseSuccess) {
                         console.log('📨 Triggering welcome email...');
                         const { data: funcData, error: funcError } = await supabase.functions.invoke('send-waitlist-email', {
                             body: { email: email }
@@ -210,9 +214,6 @@ if (signupForm) {
                         } else {
                             console.log('✅ Welcome email sent:', funcData);
                         }
-
-                        // Update the count dynamically
-                        updateWaitlistCount();
                     }
                 } catch (supabaseError) {
                     console.error('❌ Supabase error:', supabaseError);
