@@ -25,7 +25,6 @@ export async function sendEmailViaSMTP(
         );
 
         const client = new SmtpClient();
-
         // Connect using TLS (STARTTLS on port 587)
         await client.connectTLS({
             hostname: SMTP_HOST,
@@ -33,7 +32,6 @@ export async function sendEmailViaSMTP(
             username: SMTP_USERNAME,
             password: SMTP_PASSWORD,
         });
-
         // Send email
         await client.send({
             from: `${FROM_NAME} <${SMTP_USERNAME}>`,
