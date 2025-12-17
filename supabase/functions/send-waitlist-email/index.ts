@@ -125,6 +125,10 @@ Deno.serve(async (req: Request) => {
 
     const resend = new Resend(RESEND_API_KEY);
 
+    console.log(
+      `Attempting to send email from: ${FROM_NAME} <${FROM_EMAIL}> to: ${email}`,
+    );
+
     const { data, error } = await resend.emails.send({
       from: `${FROM_NAME} <${FROM_EMAIL}>`,
       to: [email],
