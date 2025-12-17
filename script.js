@@ -141,6 +141,51 @@ if (document.readyState === 'loading') {
 // =========================================
 // Form submission handling with Supabase + Web3Forms
 // =========================================
+
+// Function to check if email already exists in waitlist
+async function checkEmailExists(email) {
+    if (!supabase) {
+        return false; // If Supabase is not initialized, skip check
+    }
+    
+    try {
+        const { data, error } = await supabase
+            .from('waitlist')
+            .select('email')
+            .eq('email', email)
+            .single();
+        
+        if (error) {
+            // If error is "PGRST116" it means no rows found (email doesn't exist)
+            if (error.code === 'PGRST116') {
+                return false;
+            }
+            console.error('Error checking email:', error);
+            return false;
+        }
+        
+        // If we got data, email exists
+        return data !== null;
+    } catch (err) {
+        console.error('Error in checkEmailExists:', err);
+        return false;
+    }
+}
+
+// Function to show error message
+function showErrorMessage(message) {
+    const errorMessage = document.getElementById('errorMessage');
+    if (errorMessage) {
+        errorMessage.textContent = message;
+        errorMessage.classList.add('active');
+        
+        // Auto-hide after 5 seconds
+        setTimeout(() => {
+            errorMessage.classList.remove('active');
+        }, 5000);
+    }
+}
+
 const signupForm = document.getElementById('signupForm');
 const successMessage = document.getElementById('successMessage');
 
@@ -152,6 +197,13 @@ if (signupForm) {
         const email = formData.get('email');
         const submitButton = signupForm.querySelector('button[type="submit"]');
         const buttonText = submitButton.innerHTML;
+
+        // Check if email already exists
+        const emailExists = await checkEmailExists(email);
+        if (emailExists) {
+            showErrorMessage('This email is already on the waitlist! Check your inbox for our welcome email.');
+            return; // Stop form submission
+        }
 
         // Show loading state
         submitButton.innerHTML = `
@@ -184,8 +236,11 @@ if (signupForm) {
                     if (error) {
                         // Check if it's a duplicate email error (409 Conflict or PostgreSQL 23505)
                         if (error.code === '23505' || error.status === 409 || error.message?.includes('duplicate') || error.message?.includes('already exists')) {
-                            console.log('✅ Email already exists in waitlist - skipping duplicate');
-                            supabaseSuccess = true; // Still consider it a success
+                            console.log('⚠️ Email already exists in waitlist');
+                            showErrorMessage('This email is already on the waitlist! Check your inbox for our welcome email.');
+                            submitButton.innerHTML = buttonText;
+                            submitButton.disabled = false;
+                            return; // Stop execution
                         } else {
                             throw error;
                         }
