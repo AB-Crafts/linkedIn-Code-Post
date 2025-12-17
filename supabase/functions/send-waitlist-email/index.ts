@@ -1,7 +1,7 @@
 // Setup type definitions for built-in Supabase Runtime APIs
 // deno-lint-ignore-file no-explicit-any
 import "@supabase/functions-js/edge-runtime.d.ts";
-import { Resend } from "resend";
+import { Resend } from "npm:resend@4.0.0";
 
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 const FROM_EMAIL = Deno.env.get("FROM_EMAIL") || "noreply@pushtopost.dev";
@@ -116,6 +116,19 @@ Deno.serve(async (req: Request) => {
     if (!email) {
       return new Response(
         JSON.stringify({ error: "Email is required" }),
+        {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
+      );
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      console.error(`Invalid email format: ${email}`);
+      return new Response(
+        JSON.stringify({ error: "Invalid email format" }),
         {
           status: 400,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
