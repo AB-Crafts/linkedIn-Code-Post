@@ -139,7 +139,10 @@ if (document.readyState === 'loading') {
 function showErrorMessage(message) {
     const errorMessage = document.getElementById('errorMessage');
     if (errorMessage) {
-        errorMessage.textContent = message;
+        const errorText = errorMessage.querySelector('p');
+        if (errorText) {
+            errorText.textContent = message;
+        }
         errorMessage.classList.add('active');
         
         // Auto-hide after 5 seconds
@@ -148,6 +151,7 @@ function showErrorMessage(message) {
         }, 5000);
     }
 }
+
 
 const signupForm = document.getElementById('signupForm');
 const successMessage = document.getElementById('successMessage');

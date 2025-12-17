@@ -1137,7 +1137,58 @@ body.light-theme .moon-icon {
     line-height: 1.6;
 }
 
+/* Error Message Styles */
+.error-message {
+    display: none;
+    text-align: center;
+    padding: 32px;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all 0.3s ease;
+}
+
+.error-message.active {
+    display: block;
+    opacity: 1;
+    transform: scale(1);
+    animation: errorBounce 0.5s ease;
+}
+
+@keyframes errorBounce {
+    0% {
+        transform: scale(0.8);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.error-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 20px;
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: white;
+    box-shadow: 0 4px 16px rgba(239, 68, 68, 0.3);
+}
+
+.error-message p {
+    font-size: 16px;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+/* Success Message Styles */
 .success-message {
+
     display: none;
     text-align: center;
     padding: var(--spacing-xl);
