@@ -1,11 +1,10 @@
 // Edge function to add email to waitlist with duplicate checking and email sending
 // deno-lint-ignore-file no-explicit-any
 import { createClient } from "jsr:@supabase/supabase-js@2";
-import { Resend } from "npm:resend@4.0.0";
 
-const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
-const FROM_EMAIL = Deno.env.get("FROM_EMAIL") || "noreply@pushtopost.dev";
-const FROM_NAME = Deno.env.get("FROM_NAME") || "PushToPost Team";
+// Email service utilities (choose implementation via environment variable)
+import { sendEmailViaSMTP } from "../_shared/email-denomailer.ts";
+import { sendEmailViaResend } from "../_shared/email-resend.ts";
 
 const corsHeaders = {
     "Access-Control-Allow-Origin": "*",
@@ -224,37 +223,25 @@ Deno.serve(async (req: Request) => {
 
         console.log(`Email added to waitlist: ${email}`);
 
-        // Send welcome email via Resend
+        // Send welcome email - choose between SMTP (Denomailer) or Resend
         let emailSent = false;
-        if (RESEND_API_KEY) {
-            try {
-                const resend = new Resend(RESEND_API_KEY);
-                console.log(
-                    `Attempting to send email from: ${FROM_NAME} <${FROM_EMAIL}> to: ${email}`,
-                );
+        const USE_SMTP = Deno.env.get("USE_SMTP") !== "false"; // Default to SMTP
 
-                const { data: _emailData, error: emailError } = await resend
-                    .emails.send({
-                        from: `${FROM_NAME} <${FROM_EMAIL}>`,
-                        to: [email],
-                        subject: "🎉 Thank You for Joining PushToPost!",
-                        html: EMAIL_TEMPLATE,
-                    });
-
-                if (emailError) {
-                    console.error("Resend error:", emailError);
-                } else {
-                    console.log(`Welcome email sent successfully to ${email}`);
-                    emailSent = true;
-                }
-            } catch (emailErr: any) {
-                console.error("Error sending email:", emailErr);
-                // Don't fail the request if email fails
-            }
+        if (USE_SMTP) {
+            // Use Denomailer (SMTP) - Active implementation
+            emailSent = await sendEmailViaSMTP(
+                email,
+                "🎉 Thank You for Joining PushToPost!",
+                EMAIL_TEMPLATE,
+            );
         } else {
-            console.warn("RESEND_API_KEY not configured, skipping email");
+            // Use Resend (API) - Alternative implementation
+            emailSent = await sendEmailViaResend(
+                email,
+                "🎉 Thank You for Joining PushToPost!",
+                EMAIL_TEMPLATE,
+            );
         }
-
         return new Response(
             JSON.stringify({
                 success: true,
