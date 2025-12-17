@@ -78,7 +78,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
 // Function to update waitlist count
 async function updateWaitlistCount() {
-    console.log('🔄 Fetching waitlist count from edge function...');
+
     
     try {
         const response = await fetch(`${SUPABASE_FUNCTION_URL}/get-waitlist-count`, {
@@ -89,23 +89,23 @@ async function updateWaitlistCount() {
         });
         
         if (!response.ok) {
-            console.error('❌ Edge function error:', response.statusText);
+
             return;
         }
         
         const { count, error } = await response.json();
             
         if (error) {
-            console.error('❌ Error fetching count:', error);
+
             return;
         }
 
-        console.log('✅ Fetched count:', count);
+
 
         if (count !== null && count !== undefined) {
             const element = document.getElementById('waitlist-count');
             if (element) {
-                console.log('✅ Found element, updating text from', element.textContent, 'to', count.toLocaleString() + '+');
+
                 
                 // Animate from 0 to the actual count
                 // animateCounter is defined later in the file, but function declarations are hoisted
@@ -114,11 +114,11 @@ async function updateWaitlistCount() {
                 // Mark as animated so intersection observer doesn't re-trigger it
                 element.dataset.animated = 'true';
             } else {
-                console.error('❌ Element "waitlist-count" not found in DOM');
+
             }
         }
     } catch (err) {
-        console.error('Error fetching waitlist count:', err);
+
     }
 }
 
@@ -195,7 +195,6 @@ if (signupForm) {
 
                 if (response.status === 409) {
                     // Duplicate email detected
-                    console.log('⚠️ Email already exists in waitlist');
                     showErrorMessage(data.error || 'This email is already on the waitlist! Check your inbox for our welcome email.');
                     submitButton.innerHTML = buttonText;
                     submitButton.disabled = false;
@@ -203,14 +202,12 @@ if (signupForm) {
                 } else if (!response.ok) {
                     throw new Error(data.error || 'Failed to add to waitlist');
                 } else {
-                    console.log('✅ Email added to waitlist:', data);
                     edgeFunctionSuccess = true;
 
                     // Update the count dynamically
                     updateWaitlistCount();
                 }
             } catch (edgeFunctionError) {
-                console.error('❌ Edge function error:', edgeFunctionError);
                 // Continue with Web3Forms even if edge function fails
             }
 
@@ -224,13 +221,13 @@ if (signupForm) {
                 const data = await response.json();
 
                 if (data.success) {
-                    console.log('✅ Email sent via Web3Forms');
+
                     web3formsSuccess = true;
                 } else {
-                    console.error('❌ Web3Forms error:', data);
+
                 }
             } catch (web3Error) {
-                console.error('❌ Web3Forms fetch error:', web3Error);
+
             }
 
             // Show success if at least one method worked
