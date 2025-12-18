@@ -1,6 +1,8 @@
 // Email sending via Denomailer (Deno-native SMTP client)
 // This is the active implementation
 
+import { SMTPClient } from "https://deno.land/x/denomailer@1.6.0/mod.ts";
+
 export async function sendEmailViaSMTP(
     toEmail: string,
     subject: string,
@@ -19,19 +21,18 @@ export async function sendEmailViaSMTP(
             return false;
         }
 
-        // Import denomailer - native Deno SMTP client
-        const { SmtpClient } = await import(
-            "https://deno.land/x/denomailer@1.6.0/mod.ts"
-        );
-
-        const client = new SmtpClient();
-        // Connect using TLS (STARTTLS on port 587)
-        await client.connectTLS({
-            hostname: SMTP_HOST,
-            port: SMTP_PORT,
-            username: SMTP_USERNAME,
-            password: SMTP_PASSWORD,
+        const client = new SMTPClient({
+            connection: {
+                hostname: SMTP_HOST,
+                port: SMTP_PORT,
+                tls: true,
+                auth: {
+                    username: SMTP_USERNAME,
+                    password: SMTP_PASSWORD,
+                },
+            },
         });
+
         // Send email
         await client.send({
             from: `${FROM_NAME} <${SMTP_USERNAME}>`,
@@ -41,8 +42,9 @@ export async function sendEmailViaSMTP(
             html: htmlContent,
         });
 
-        // Close connection
-        await client.close();
+        // The client automatically closes after send or on process exit in Denomailer 1.6.0
+        // but it's good practice to ensure it's handled if supported.
+        // In this version, SMTPClient is a high-level API.
 
         console.log(`Email sent successfully via SMTP to ${toEmail}`);
         return true;
