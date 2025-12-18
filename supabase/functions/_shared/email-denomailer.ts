@@ -25,13 +25,20 @@ export async function sendEmailViaSMTP(
             connection: {
                 hostname: SMTP_HOST,
                 port: SMTP_PORT,
-                tls: true,
+                tls: SMTP_PORT === 465, // Use Implicit TLS for 465, STARTTLS for others (like 587)
                 auth: {
                     username: SMTP_USERNAME,
                     password: SMTP_PASSWORD,
                 },
             },
+            debug: {
+                log: true, // Enable logging for debugging connection issues
+            },
         });
+
+        console.log(
+            `Attempting to send email via ${SMTP_HOST}:${SMTP_PORT} (STARTTLS)...`,
+        );
 
         // Send email
         await client.send({
