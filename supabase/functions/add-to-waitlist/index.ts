@@ -2,9 +2,8 @@
 // deno-lint-ignore-file no-explicit-any
 import { createClient } from "jsr:@supabase/supabase-js@2";
 
-// Email service utilities (choose implementation via environment variable)
-import { sendEmailViaSMTP } from "../_shared/email-denomailer.ts";
-import { sendEmailViaResend } from "../_shared/email-resend.ts";
+// Email service utilities
+import { sendEmailViaBrevo } from "../_shared/email-brevo.ts";
 
 const corsHeaders = {
     "Access-Control-Allow-Origin": "*",
@@ -223,25 +222,13 @@ Deno.serve(async (req: Request) => {
 
         console.log(`Email added to waitlist: ${email}`);
 
-        // Send welcome email - choose between SMTP (Denomailer) or Resend
-        let emailSent = false;
-        const USE_SMTP = Deno.env.get("USE_SMTP") !== "false"; // Default to SMTP
+        // Send welcome email via Brevo API
+        const emailSent = await sendEmailViaBrevo(
+            email,
+            "🎉 Thank You for Joining PushToPost!",
+            EMAIL_TEMPLATE,
+        );
 
-        if (USE_SMTP) {
-            // Use Denomailer (SMTP) - Active implementation
-            emailSent = await sendEmailViaSMTP(
-                email,
-                "🎉 Thank You for Joining PushToPost!",
-                EMAIL_TEMPLATE,
-            );
-        } else {
-            // Use Resend (API) - Alternative implementation
-            emailSent = await sendEmailViaResend(
-                email,
-                "🎉 Thank You for Joining PushToPost!",
-                EMAIL_TEMPLATE,
-            );
-        }
         return new Response(
             JSON.stringify({
                 success: true,
