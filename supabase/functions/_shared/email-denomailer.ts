@@ -21,23 +21,33 @@ export async function sendEmailViaSMTP(
             return false;
         }
 
+        const isImplicitTLS = SMTP_PORT === 465;
+
+        if (SMTP_PORT === 587) {
+            console.warn(
+                "⚠️ Port 587 (STARTTLS) is often blocked in Supabase Edge Functions. If this fails, please switch to port 465 (Implicit TLS) in your secrets.",
+            );
+        }
+
         const client = new SMTPClient({
             connection: {
                 hostname: SMTP_HOST,
                 port: SMTP_PORT,
-                tls: SMTP_PORT === 465, // Use Implicit TLS for 465, STARTTLS for others (like 587)
+                tls: isImplicitTLS, // Implicit TLS for 465, STARTTLS for others
                 auth: {
                     username: SMTP_USERNAME,
                     password: SMTP_PASSWORD,
                 },
             },
             debug: {
-                log: true, // Enable logging for debugging connection issues
+                log: true,
             },
         });
 
         console.log(
-            `Attempting to send email via ${SMTP_HOST}:${SMTP_PORT} (STARTTLS)...`,
+            `Initialising SMTP connection to ${SMTP_HOST}:${SMTP_PORT} using ${
+                isImplicitTLS ? "Implicit TLS" : "STARTTLS"
+            }...`,
         );
 
         // Send email
@@ -49,14 +59,18 @@ export async function sendEmailViaSMTP(
             html: htmlContent,
         });
 
-        // The client automatically closes after send or on process exit in Denomailer 1.6.0
-        // but it's good practice to ensure it's handled if supported.
-        // In this version, SMTPClient is a high-level API.
-
-        console.log(`Email sent successfully via SMTP to ${toEmail}`);
+        console.log(`Email successfully sent to ${toEmail}`);
         return true;
-    } catch (error) {
-        console.error("Error sending email via SMTP:", error);
+    } catch (error: any) {
+        console.error("❌ SMTP Error:", error.message || error);
+        if (
+            error.message?.includes("BadResource") ||
+            error.message?.includes("invalid cmd")
+        ) {
+            console.error(
+                "💡 TIP: This error often means port 587 is blocked. Try changing SMTP_PORT to 465 in your Supabase Dashboard > Edge Functions > Secrets.",
+            );
+        }
         return false;
     }
 }

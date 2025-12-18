@@ -31,9 +31,15 @@ SUPABASE_URL=https://tmvwqggielmjjiqdlskb.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=<your-service-role-key>
 
 # Required for add-to-waitlist function (email sending)
+USE_SMTP=true
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=465
+SMTP_USERNAME=pushtopost@gmail.com
+SMTP_PASSWORD=<your-app-password>
+FROM_NAME=PushToPost Team
+# Or if using Resend (not recommended for now)
 RESEND_API_KEY=<your-resend-api-key>
 FROM_EMAIL=noreply@pushtopost.dev
-FROM_NAME=PushToPost Team
 ```
 
 > **Note**: The `SUPABASE_SERVICE_ROLE_KEY` is different from the anon key. Find

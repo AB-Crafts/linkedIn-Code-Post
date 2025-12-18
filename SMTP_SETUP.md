@@ -10,8 +10,12 @@ Functions → Secrets:
 SMTP_USERNAME=pushtopost@gmail.com
 SMTP_PASSWORD=<your-app-password>
 SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
+SMTP_PORT=465
 USE_SMTP=true
+
+> [!IMPORTANT]
+> **Supabase Edge Functions block port 587.** You MUST use port **465** (Implicit TLS) for Gmail to work correctly.
+
 
 # Keep these for Supabase
 SUPABASE_URL=https://tmvwqggielmjjiqdlskb.supabase.co
