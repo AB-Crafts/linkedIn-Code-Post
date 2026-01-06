@@ -159,7 +159,7 @@ body.light-theme .nav-link {
 }
 
 body.light-theme .nav-link:hover {
-    color: var(--color-bg-primary);
+    color: black;
 }
 
 body.light-theme .nav-link::after {
