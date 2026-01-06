@@ -155,7 +155,7 @@ body.light-theme .step-content:hover {
 
 /* Light theme nav links */
 body.light-theme .nav-link {
-    color: var(--color-text-secondary);
+    color:black;
 }
 
 body.light-theme .nav-link:hover {
